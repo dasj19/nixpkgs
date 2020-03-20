@@ -19194,6 +19194,8 @@ in
 
   gcal = callPackage ../applications/misc/gcal { };
 
+  gcstar = callPackage ../applications/misc/gcstar { };
+
   geany = callPackage ../applications/editors/geany { };
   geany-with-vte = callPackage ../applications/editors/geany/with-vte.nix { };
 
