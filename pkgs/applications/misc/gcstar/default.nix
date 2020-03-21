@@ -1,4 +1,4 @@
-{stdenv, fetchurl, bash, perl, perlPackages, makeWrapper}: 
+{stdenv, fetchurl, bash, perl, perlPackages,  makeWrapper, makeDesktopItem}:
 
 stdenv.mkDerivation rec {
   pname = "gcstar";
@@ -29,7 +29,8 @@ stdenv.mkDerivation rec {
     perlPackages.XMLSimple
     perlPackages.XMLParser ];
 
-  buildInputs = [makeWrapper] ++ perlDeps;
+  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = perlDeps;
   propagatedBuildInputs = perlDeps;
 
   installPhase = ''
@@ -40,16 +41,23 @@ stdenv.mkDerivation rec {
     sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' ./install
     sed -i 's|/bin/sh|'"${bash}"'/bin/bash|g' share/gcstar/helpers/xdg-open
 
+    sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' share/applications/gcstar-thumbnailer
+    sed -i 's|/usr/local/share|'"$out"'|g' share/applications/gcstar-thumbnailer
+
     perl install --text --prefix=$out
+
+    # Setting up the desktop item.
+    mkdir -p $out/share/applications
+    mkdir -p $out/share/pixmaps
+    cp share/applications/$pname.desktop $out/share/applications/$pname.desktop
+    cp share/$pname/icons/${pname}_256x256.png $out/share/pixmaps/$pname.png
   '';
 
   postFixup = "wrapProgram $out/bin/gcstar --prefix PERL5LIB : $PERL5LIB";
 
-  outputs = [ "out" ];
-
   meta = with stdenv.lib; {
     homepage = https://launchpad.net/gcstar;
-    description = "GCstar is an application for managing your collections.";
+    description = "A general purpose collection manager";
     longDescription = ''
     GCstar is an application for managing your collections.
     It supports many types of collections, including movies, books, games, comics, stamps, coins, and many more.
@@ -58,7 +66,6 @@ stdenv.mkDerivation rec {
     '';
     license = licenses.gpl2;
     platforms = platforms.all;
-    outputsToInstall = [ "out" ];
   };
   
   inherit perl;
