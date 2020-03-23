@@ -1,12 +1,12 @@
-{stdenv, fetchurl, bash, perl, perlPackages,  makeWrapper, makeDesktopItem}:
+{stdenv, fetchurl, bash, perl, gtk2, perlPackages, wrapGAppsHook}:
 
 stdenv.mkDerivation rec {
   pname = "gcstar";
-  version = "1.7.1";
+  version = "1.7.2";
 
   src = fetchurl {
-    url = "https://launchpad.net/${pname}/1.7/${version}/+download/${pname}-${version}.tar.gz";
-    sha256 = "0gcz88slgm14rlsw84gpka7hpdmrdvpdvxp9qvs45gv1383r0b6s";
+    url = "https://gitlab.com/Kerenoc/GCstar/-/archive/v1.7.2/GCstar-v1.7.2.tar.gz";
+    sha256 = "014zafdw1n6agv6l449gc2ka1wsrps4dw7w391qyyqplhqkalliy";
   };
 
   enableParallelBuilding = false;
@@ -23,19 +23,25 @@ stdenv.mkDerivation rec {
     perlPackages.GDGraph
     perlPackages.GDText
     perlPackages.HTMLParser
+    perlPackages.ImageExifTool
     perlPackages.librelative
     perlPackages.LWPUserAgent
+    perlPackages.LWPProtocolHttps
+    perlPackages.MP3Info
+    perlPackages.MP3Tag
+    perlPackages.NetFreeDB
+    perlPackages.OggVorbisHeaderPurePerl
     perlPackages.Pango
     perlPackages.XMLSimple
     perlPackages.XMLParser ];
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ wrapGAppsHook ];
   buildInputs = perlDeps;
   propagatedBuildInputs = perlDeps;
 
   installPhase = ''
     tar xvfz $src
-    cd gcstar
+    cd GCstar-v${version}/gcstar
 
     sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' bin/gcstar
     sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' ./install
@@ -53,7 +59,9 @@ stdenv.mkDerivation rec {
     cp share/$pname/icons/${pname}_256x256.png $out/share/pixmaps/$pname.png
   '';
 
-  postFixup = "wrapProgram $out/bin/gcstar --prefix PERL5LIB : $PERL5LIB";
+  postFixup = ''
+    wrapProgram $out/bin/gcstar --prefix PERL5LIB : $PERL5LIB
+  '';
 
   meta = with stdenv.lib; {
     homepage = https://launchpad.net/gcstar;
