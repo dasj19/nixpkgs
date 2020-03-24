@@ -1,18 +1,19 @@
-{stdenv, fetchurl, bash, perl, gtk2, perlPackages, wrapGAppsHook}:
+{stdenv, fetchFromGitLab, bash, perl, gtk2, perlPackages, wrapGAppsHook}:
 
 stdenv.mkDerivation rec {
   pname = "gcstar";
   version = "1.7.2";
 
-  src = fetchurl {
-    url = "https://gitlab.com/Kerenoc/GCstar/-/archive/v1.7.2/GCstar-v1.7.2.tar.gz";
-    sha256 = "014zafdw1n6agv6l449gc2ka1wsrps4dw7w391qyyqplhqkalliy";
-  };
+  src = fetchFromGitLab {
+      owner = "Kerenoc";
+      repo = "GCstar";
+      rev = "v${version}";
+      sha256 = "1vqfff33sssvlvsva1dflggmwl00j5p64sn1669f9wrbvjkxgpv4";
+    };
 
   enableParallelBuilding = false;
-  doCheck = false;
 
- perlDeps = [
+  perlDeps = [
     perl
     perlPackages.ArchiveZip
     perlPackages.DateCalc
@@ -40,15 +41,7 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = perlDeps;
 
   installPhase = ''
-    tar xvfz $src
-    cd GCstar-v${version}/gcstar
-
-    sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' bin/gcstar
-    sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' ./install
-    sed -i 's|/bin/sh|'"${bash}"'/bin/bash|g' share/gcstar/helpers/xdg-open
-
-    sed -i 's|/usr/bin/perl|'"${perl}"'/bin/perl|g' share/applications/gcstar-thumbnailer
-    sed -i 's|/usr/local/share|'"$out"'|g' share/applications/gcstar-thumbnailer
+    cd gcstar
 
     perl install --text --prefix=$out
 
@@ -60,11 +53,14 @@ stdenv.mkDerivation rec {
   '';
 
   postFixup = ''
+    patchShebangs bin/gcstar
+    patchShebangs ./install
+
     wrapProgram $out/bin/gcstar --prefix PERL5LIB : $PERL5LIB
   '';
 
   meta = with stdenv.lib; {
-    homepage = https://launchpad.net/gcstar;
+    homepage = https://gitlab.com/Kerenoc/GCstar;
     description = "A general purpose collection manager";
     longDescription = ''
     GCstar is an application for managing your collections.
