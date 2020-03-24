@@ -13671,7 +13671,8 @@ let
       url = mirror://cpan/authors/id/D/DS/DSHULTZ/Net-FreeDB-0.10.tar.gz;
       sha256 = "11dfi14qnzsnmr71cygir85zfj15n08b7d5g0i4cj5pb70if2hzp";
     };
-    doCheck = false;
+    #doCheck = false;
+    buildInputs = [ TestMost TestDeep TestWarn TestException TestDifferences ];
     propagatedBuildInputs = [ CDDBFile Moo libnet ];
     meta = {
       description = "Perl interface to freedb server(s)";
@@ -14218,7 +14219,9 @@ let
       url = mirror://cpan/authors/id/D/DA/DANIEL/Ogg-Vorbis-Header-PurePerl-1.0.tar.gz;
       sha256 = "0kjqswnwhp7yf7czvhggdyp2pgg5wa58b4jwpn8j3km7h2ll8pmy";
     };
-    doCheck = false;
+    buildInputs = [ TestMore ];
+    # The testing mechanism is erorrneous upstream. See http://matrix.cpantesters.org/?dist=Ogg-Vorbis-Header-PurePerl+1.0
+    #doCheck = false;
     meta = {
       description = "An object-oriented interface to Ogg Vorbis information and comment fields";
       license = with stdenv.lib.licenses; [ artistic1 ];
