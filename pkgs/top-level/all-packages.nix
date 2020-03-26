@@ -2150,6 +2150,8 @@ in
 
   pueue = callPackage ../applications/misc/pueue { };
 
+  pixiecore = callPackage ../tools/networking/pixiecore {};
+
   pyCA = python3Packages.callPackage ../applications/video/pyca {};
 
   pyznap = python3Packages.callPackage ../tools/backup/pyznap {};
@@ -5441,7 +5443,8 @@ in
 
   grocy = callPackage ../servers/grocy { };
 
-  nextcloud = callPackage ../servers/nextcloud { };
+  inherit (callPackage ../servers/nextcloud {})
+    nextcloud17 nextcloud18;
 
   nextcloud-client = libsForQt5.callPackage ../applications/networking/nextcloud-client { };
 
@@ -19939,6 +19942,8 @@ in
 
   herbstluftwm = callPackage ../applications/window-managers/herbstluftwm { };
 
+  hercules = callPackage ../applications/virtualization/hercules { };
+
   hexchat = callPackage ../applications/networking/irc/hexchat { };
 
   hexcurse = callPackage ../applications/editors/hexcurse { };
@@ -22040,7 +22045,8 @@ in
   stp = callPackage ../applications/science/logic/stp { };
 
   stretchly = callPackage ../applications/misc/stretchly {
-    inherit (gnome2) GConf;
+    # Error on launch w/electron_8
+    electron = electron_7;
   };
 
   stumpish = callPackage ../applications/window-managers/stumpish {};
@@ -26418,7 +26424,9 @@ in
 
   dsniff = callPackage ../tools/networking/dsniff {};
 
-  wal-g = callPackage ../tools/backup/wal-g {};
+  wal-g = callPackage ../tools/backup/wal-g {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   tlwg = callPackage ../data/fonts/tlwg { };
 
