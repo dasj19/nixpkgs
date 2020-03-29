@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
     perlPackages.GDGraph
     perlPackages.GDText
     perlPackages.HTMLParser
+    perlPackages.JSON
     perlPackages.ImageExifTool
     perlPackages.librelative
     perlPackages.LWPUserAgent

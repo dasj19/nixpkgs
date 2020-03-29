@@ -14238,7 +14238,7 @@ let
     };
     buildInputs = [ TestMore ];
     # The testing mechanism is erorrneous upstream. See http://matrix.cpantesters.org/?dist=Ogg-Vorbis-Header-PurePerl+1.0
-    #doCheck = false;
+    doCheck = false;
     meta = {
       description = "An object-oriented interface to Ogg Vorbis information and comment fields";
       license = with stdenv.lib.licenses; [ artistic1 ];
