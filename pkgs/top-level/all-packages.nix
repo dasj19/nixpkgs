@@ -525,6 +525,8 @@ in
   acoustidFingerprinter = callPackage ../tools/audio/acoustid-fingerprinter {
     ffmpeg = ffmpeg_2;
   };
+  
+  alsaequal = callPackage ../tools/audio/alsaequal { };
 
   acpica-tools = callPackage ../tools/system/acpica-tools { };
 
@@ -2394,6 +2396,8 @@ in
   cdrtools = callPackage ../tools/cd-dvd/cdrtools {
     inherit (darwin.apple_sdk.frameworks) Carbon IOKit;
   };
+
+  cemu = qt5.callPackage ../applications/science/math/cemu { };
 
   isomd5sum = callPackage ../tools/cd-dvd/isomd5sum { };
 
@@ -4834,6 +4838,8 @@ in
 
   libevdev = callPackage ../development/libraries/libevdev { };
 
+  liberio = callPackage ../development/libraries/liberio { };
+
   libevdevplus = callPackage ../development/libraries/libevdevplus { };
 
   libfann = callPackage ../development/libraries/libfann { };
@@ -6891,6 +6897,8 @@ in
   thefuck = python3Packages.callPackage ../tools/misc/thefuck { };
 
   thin-provisioning-tools = callPackage ../tools/misc/thin-provisioning-tools {  };
+
+  thinkpad-scripts = python3.pkgs.callPackage ../tools/misc/thinkpad-scripts { };
 
   tiled = libsForQt5.callPackage ../applications/editors/tiled { };
 
@@ -13713,10 +13721,7 @@ in
     nvidia_x11 = linuxPackages.nvidia_x11.override { libsOnly = true; };
   };
 
-  ocl-icd-oclhGen = oclh: callPackage ../development/libraries/ocl-icd { opencl-headers = oclh; };
-  ocl-icd-oclh_1_2 = ocl-icd-oclhGen opencl-headers_1_2;
-  ocl-icd-oclh_2_2 = ocl-icd-oclhGen opencl-headers_2_2;
-  ocl-icd = ocl-icd-oclh_2_2;
+  ocl-icd = callPackage ../development/libraries/ocl-icd { };
 
   ode = callPackage ../development/libraries/ode { };
 
@@ -13748,10 +13753,7 @@ in
   opencascade = callPackage ../development/libraries/opencascade { };
   opencascade-occt = callPackage ../development/libraries/opencascade-occt { };
 
-  opencl-headersGen = v: callPackage ../development/libraries/opencl-headers { version = v; };
-  opencl-headers_1_2 = opencl-headersGen "12";
-  opencl-headers_2_2 = opencl-headersGen "22";
-  opencl-headers = opencl-headers_2_2;
+  opencl-headers = callPackage ../development/libraries/opencl-headers { };
 
   opencl-clhpp = callPackage ../development/libraries/opencl-clhpp { };
 
@@ -18352,7 +18354,7 @@ in
   aacgain = callPackage ../applications/audio/aacgain { };
 
   abcde = callPackage ../applications/audio/abcde {
-    inherit (pythonPackages) eyeD3;
+    inherit (python3Packages) eyeD3;
   };
 
   abiword = callPackage ../applications/office/abiword { };
@@ -20305,6 +20307,8 @@ in
 
   lemonbar-xft = callPackage ../applications/window-managers/lemonbar/xft.nix { };
 
+  legit = gitAndTools.legit;
+
   leo-editor = callPackage ../applications/editors/leo-editor { };
 
   libowfat = callPackage ../development/libraries/libowfat { };
@@ -21277,6 +21281,8 @@ in
   pinta = callPackage ../applications/graphics/pinta {
     gtksharp = gtk-sharp-2_0;
   };
+
+  pistol = callPackage ../tools/misc/pistol { };
 
   plex-media-player = libsForQt512.callPackage ../applications/video/plex-media-player { };
 
@@ -23482,6 +23488,14 @@ in
   ivan = callPackage ../games/ivan { };
 
   ja2-stracciatella = callPackage ../games/ja2-stracciatella { };
+
+  katago = callPackage ../games/katago { };
+
+  katagoWithCuda = katago.override {
+    cudaSupport = true;
+    cudnn = cudnn_cudatoolkit_10_1;
+    cudatoolkit = cudatoolkit_10_1;
+  };
 
   klavaro = callPackage ../games/klavaro {};
 
