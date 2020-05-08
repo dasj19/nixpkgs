@@ -2,16 +2,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "pueue";
-  version = "0.2.1";
+  version = "0.3.1";
 
   src = fetchFromGitHub {
     owner = "Nukesor";
     repo = pname;
     rev = "v${version}";
-    sha256 = "1yx69pwdal0p5dfhabjdns9z6z3fa41wh7bxa4dpsjx37ziglcsp";
+    sha256 = "1v3fphx71hyv7fq09slhyzchw362swzhmhn7wmbazfdrj6fjhcki";
   };
 
-  cargoSha256 = "1ksr5fw9p3j1bnlgfimb5nsryb4si8ic2x4prsra1mwkc91hr7x3";
+  cargoSha256 = "04vi9la17pabz1spfw1fzgy4c2ifnis6am5m4ck3lhccnn6j8bd3";
 
   checkPhase = "cargo test -- --skip test_single_huge_payload";
 

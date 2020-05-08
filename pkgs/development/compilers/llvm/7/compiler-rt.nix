@@ -20,7 +20,7 @@ stdenv.mkDerivation {
     "-DSCUDO_DEFAULT_OPTIONS=DeleteSizeMismatch=0:DeallocationTypeMismatch=0"
   ];
 
-  cmakeFlags = stdenv.lib.optionals (useLLVM || stdenv.isDarwin) [
+  cmakeFlags = [
     "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
     "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
     "-DCMAKE_ASM_COMPILER_TARGET=${stdenv.hostPlatform.config}"
@@ -55,7 +55,10 @@ stdenv.mkDerivation {
   # can build this. If we didn't do it, basically the entire nixpkgs on Darwin would have an unfree dependency and we'd
   # get no binary cache for the entire platform. If you really find yourself wanting the TSAN, make this controllable by
   # a flag and turn the flag off during the stdenv build.
-  postPatch = stdenv.lib.optionalString stdenv.isDarwin ''
+  postPatch = ''
+    substituteInPlace cmake/builtin-config-ix.cmake \
+      --replace 'set(X86 i386)' 'set(X86 i386 i486 i586 i686)'
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
     substituteInPlace cmake/config-ix.cmake \
       --replace 'set(COMPILER_RT_HAS_TSAN TRUE)' 'set(COMPILER_RT_HAS_TSAN FALSE)'
   '' + stdenv.lib.optionalString (useLLVM) ''
@@ -68,7 +71,7 @@ stdenv.mkDerivation {
   '';
 
   # Hack around weird upsream RPATH bug
-  postInstall = stdenv.lib.optionalString stdenv.isDarwin ''
+  postInstall = stdenv.lib.optionalString (stdenv.hostPlatform.isDarwin || stdenv.hostPlatform.isWasm) ''
     ln -s "$out/lib"/*/* "$out/lib"
   '' + stdenv.lib.optionalString (useLLVM) ''
     ln -s $out/lib/*/clang_rt.crtbegin-*.o $out/lib/linux/crtbegin.o

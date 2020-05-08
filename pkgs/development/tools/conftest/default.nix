@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "conftest";
-  version = "0.18.0";
+  version = "0.18.2";
 
   src = fetchFromGitHub {
     owner = "instrumenta";
     repo = "conftest";
     rev = "v${version}";
-    sha256 = "189as930fksyqk3z636gyqdym1bqm522mya7msfnhzpnh46k5jvd";
+    sha256 = "15xzldcmnpfg1hd5zr5i7x2zjrgkwnp4nylxbn9kfic2dpjp1a38";
   };
 
-  modSha256 = "0gm08lrlaxc7504mapjdm3c4mwlzybnqxfwkkh6fawzvmd9sqddr";
+  modSha256 = "0nwmxmh1pmism5r9zzghfrzizr1fbyc8d4jljrbzjjq1l449r2ja";
 
   buildFlagsArray = ''
     -ldflags=

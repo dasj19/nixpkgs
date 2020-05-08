@@ -1,13 +1,13 @@
 { stdenv, fetchurl, pkgconfig, freeglut, libGLU, libGL, libcdio, libjack2
-, libsamplerate, libsndfile, libX11, SDL2, SDL2_net, zlib }:
+, libsamplerate, libsndfile, libX11, SDL2, SDL2_net, zlib, alsaLib }:
 
 stdenv.mkDerivation rec {
   pname = "mednafen";
-  version = "1.22.2";
+  version = "1.24.2";
 
   src = fetchurl {
     url = "https://mednafen.github.io/releases/files/${pname}-${version}.tar.xz";
-    sha256 = "159gvzrf4as1fp74czzc14vamhd6s3hlnvwglfgdd5j6d6n37m7s";
+    sha256 = "0v3w0miyz86ihcir7ab82zjfklp550pk6g9xjxcx6mmvhp9dws8i";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -17,6 +17,7 @@ stdenv.mkDerivation rec {
     libGLU libGL
     libcdio
     libjack2
+    alsaLib
     libsamplerate
     libsndfile
     libX11

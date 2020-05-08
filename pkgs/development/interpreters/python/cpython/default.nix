@@ -28,6 +28,7 @@
 , stripTkinter ? false
 , rebuildBytecode ? true
 , stripBytecode ? false
+, includeSiteCustomize ? true
 , static ? false
 }:
 
@@ -238,7 +239,7 @@ in with passthru; stdenv.mkDerivation {
     '' + optionalString stripTests ''
     # Strip tests
     rm -R $out/lib/python*/test $out/lib/python*/**/test{,s}
-    '' + ''
+    '' + optionalString includeSiteCustomize ''
     # Include a sitecustomize.py file
     cp ${../sitecustomize.py} $out/${sitePackages}/sitecustomize.py
     '' + optionalString rebuildBytecode ''
@@ -275,7 +276,7 @@ in with passthru; stdenv.mkDerivation {
   enableParallelBuilding = true;
 
   meta = {
-    homepage = http://python.org;
+    homepage = "http://python.org";
     description = "A high-level dynamically-typed programming language";
     longDescription = ''
       Python is a remarkably powerful dynamic programming language that

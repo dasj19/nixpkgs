@@ -7,11 +7,11 @@
 stdenv.mkDerivation rec {
 
   pname = "omnisharp-roslyn";
-  version = "1.34.11";
+  version = "1.35.0";
   
   src = fetchurl {
     url = "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v${version}/omnisharp-mono.tar.gz";
-    sha256 = "0j55jrji7ya0pm91hfmyd9s6lkl35xbybr81a1gka90mlyp0gx63";
+    sha256 = "191jiyw6kx1rw241bg9nv5splfpz6ny90g9yf28cd0xwpx978p83";
   };
 
   nativeBuildInputs = [ makeWrapper ];

@@ -79,8 +79,9 @@ stdenv.mkDerivation rec {
     mkdir ../test/tmp
     export LD_LIBRARY_PATH="$(realpath ../build/lib)"
 
-    # Fix tests on Aarch64
-    ${stdenv.lib.optionalString stdenv.isAarch64 ''
+    ${stdenv.lib.optionalString (stdenv.isAarch64 || stdenv.isAarch32) ''
+      # Fix tests on arm
+      # https://github.com/Exiv2/exiv2/issues/933
       rm -f ../tests/bugfixes/github/test_CVE_2018_12265.py
     ''}
 
@@ -110,7 +111,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
-    homepage = https://www.exiv2.org/;
+    homepage = "https://www.exiv2.org/";
     description = "A library and command-line utility to manage image metadata";
     platforms = platforms.all;
     license = licenses.gpl2Plus;

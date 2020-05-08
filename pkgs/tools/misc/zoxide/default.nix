@@ -6,20 +6,20 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "zoxide";
-  version = "0.3.0";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "ajeetdsouza";
     repo = "zoxide";
     rev = "v${version}";
-    sha256 = "0w4by34chm2baqldxx72bhjz8ggsllpir1df07gxi5fjkmil8jy9";
+    sha256 = "1qkvmjrkcivfzbm6swl5lgvpqz9av9jxcn9i8ms3wz4vfsibmlxv";
   };
 
   buildInputs = [
     fzf
   ];
 
-  cargoSha256 = "19fziapiv5w9wxslw47rf3lgc2lv7dyl3n8py6bsddq41fzay30w";
+  cargoSha256 = "1w921f7b6kzc1mjzff1bcs3mg4cp9h48698w2zlv5jzjs7nwgb8n";
 
   meta = with lib; {
     description = "A fast cd command that learns your habits";
