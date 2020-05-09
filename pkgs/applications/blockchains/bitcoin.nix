@@ -26,7 +26,11 @@ in stdenv.mkDerivation rec {
     urls = [ "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
              "https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
            ];
+<<<<<<< HEAD
     sha256 = "1h3w7brc18145np920vy7j5ms5hym59hvr40swdjx34fbdaisngj";
+=======
+    sha256 = "f2591d555b8e8c2e1bd780e40d53a91e165d8b3c7e0391ae2d24a0c0f23a7cc0";
+>>>>>>> upstream/master
   };
 
   nativeBuildInputs =
@@ -73,7 +77,7 @@ in stdenv.mkDerivation rec {
       parties. Users hold the crypto keys to their own money and transact directly
       with each other, with the help of a P2P network to check for double-spending.
     '';
-    homepage = "http://www.bitcoin.org/";
+    homepage = "https://bitcoin.org/";
     maintainers = with maintainers; [ roconnor AndersonTorres ];
     license = licenses.mit;
     platforms = platforms.unix;

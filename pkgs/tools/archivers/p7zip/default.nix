@@ -13,8 +13,7 @@ stdenv.mkDerivation rec {
     ./12-CVE-2016-9296.patch
     ./13-CVE-2017-17969.patch
     (fetchpatch {
-      name = "3-CVE-2018-5996.patch";
-      url = "https://raw.githubusercontent.com/termux/termux-packages/master/packages/p7zip/3-CVE-2018-5996.patch";
+      name = "3-CVE-2018-5996.patch";      url = "https://raw.githubusercontent.com/termux/termux-packages/master/packages/p7zip/3-CVE-2018-5996.patch";
       sha256 = "1zivvkazmza0653i498ccp3zbpbpc7dvxl3zxwllbx41b6n589yp";
     })
     (fetchpatch {

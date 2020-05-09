@@ -2700,6 +2700,8 @@ in {
 
   dpath = callPackage ../development/python-modules/dpath { };
 
+  dparse = callPackage ../development/python-modules/dparse { };
+
   dpkt = callPackage ../development/python-modules/dpkt {};
 
   urllib3 = callPackage ../development/python-modules/urllib3 {};
@@ -5667,6 +5669,8 @@ in {
   }));
 
   safe = callPackage ../development/python-modules/safe { };
+
+  safety = callPackage ../development/python-modules/safety { };
 
   sampledata = callPackage ../development/python-modules/sampledata { };
 
