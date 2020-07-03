@@ -14910,6 +14910,8 @@ in
 
   subtitleeditor = callPackage ../applications/video/subtitleeditor { enchant = enchant1; };
 
+  gnome-subtitles = callPackage ../applications/video/gnome-subtitles { };
+
   suil = callPackage ../development/libraries/audio/suil { };
 
   suil-qt5 = suil.override {
