@@ -9126,6 +9126,11 @@ in
 
   mono = mono5;
 
+  mono3 = lowPrio (callPackage ../development/compilers/mono/3.nix {
+    inherit (darwin) libobjc;
+    inherit (darwin.apple_sdk.frameworks) Foundation;
+  });
+
   mono4 = lowPrio (callPackage ../development/compilers/mono/4.nix {
     inherit (darwin) libobjc;
     inherit (darwin.apple_sdk.frameworks) Foundation;
@@ -19161,6 +19166,8 @@ in
   chromium = callPackage ../applications/networking/browsers/chromium (config.chromium or {});
 
   chronos = callPackage ../applications/networking/cluster/chronos { };
+
+  chronojump = callPackage ../applications/misc/chronojump { };
 
   chromiumBeta = lowPrio (chromium.override { channel = "beta"; });
 
