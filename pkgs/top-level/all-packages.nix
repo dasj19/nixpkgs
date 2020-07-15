@@ -13624,6 +13624,8 @@ in
 
   filter-audio = callPackage ../development/libraries/filter-audio {};
 
+  filtron = callPackage ../servers/filtron {};
+
   flann = callPackage ../development/libraries/flann { };
 
   flatcc = callPackage ../development/libraries/flatcc { };
