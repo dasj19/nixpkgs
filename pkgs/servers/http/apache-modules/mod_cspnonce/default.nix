@@ -3,12 +3,12 @@
 
 stdenv.mkDerivation rec {
   pname = "mod_cspnonce";
-  version = "1.2.1";
+  version = "1.3";
   src = fetchFromGitHub {
     owner = "wyattoday";
     repo = "mod_cspnonce";
     rev = version;
-    sha256 = "1qmc7i53p88jqd5gab8315lfrxn9q5l49r03zpaj3fh1afps2p0z";
+    sha256 = "0kqvxf1dn8r0ywrfiwsxryjrxii2sq11wisbjnm7770sjwckwqh5";
   };
 
   buildInputs = [ apacheHttpd ];
