@@ -2,13 +2,13 @@
 
 buildGoPackage rec {
   pname = "filtron";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "asciimoo";
     repo = "filtron";
     rev = "v${version}";
-    sha256 = "1yvln4im9cwxsan6x245sfcy0lc4k6l89ibvxpsx0y274nllq7qy";
+    sha256 = "18d3h0i2sfqbc0bjx26jm2n9f37zwp8z9z4wd17sw7nvkfa72a26";
   };
 
   goPackagePath = "github.com/asciimoo/filtron";
