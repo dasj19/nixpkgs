@@ -1,30 +1,39 @@
-{ lib, stdenv, fetchFromGitHub, cmake, fftw, catch2 }:
+{ lib, stdenv, fetchFromGitHub, fftw, qtbase, qmake }:
 
 stdenv.mkDerivation rec {
   pname = "libkeyfinder";
-  version = "2.2.4";
+  version = "2.1";
 
   src = fetchFromGitHub {
-    owner = "mixxxdj";
-    repo = "libkeyfinder";
+    sha256 = "07kc0cl6kirgmpdgkgmp6r3yvyf7b1w569z01g8rfl1cig80qdc7";
     rev = "v${version}";
-    sha256 = "005qq81xfzi1iifvpgkqpizxcrfisafq2r0cjp4fxqh1ih7bfimv";
+    repo = "libKeyFinder";
+    owner = "ibsh";
   };
 
-  # needed for finding libkeyfinder.so to link it into keyfinder-tests executable
-  cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF" ];
+  nativeBuildInputs = [ qmake ];
+  buildInputs = [ fftw qtbase ];
 
-  nativeBuildInputs = [ cmake ];
+  dontWrapQtApps = true;
 
-  buildInputs = [ fftw ];
+  postPatch = ''
+    substituteInPlace LibKeyFinder.pro \
+      --replace "/usr/local" "$out" \
+      --replace "-stdlib=libc++" ""
+  '';
 
-  checkInputs = [ catch2 ];
+  enableParallelBuilding = true;
 
-  doCheck = true;
+  postInstall = ''
+    mkdir -p $out/include/keyfinder
+    install -m644 *.h $out/include/keyfinder
+    mkdir -p $out/lib
+    cp -a lib*.so* $out/lib
+  '';
 
   meta = with lib; {
     description = "Musical key detection for digital audio (C++ library)";
-    homepage = "https://mixxxdj.github.io/libkeyfinder/";
+    homepage = "http://www.ibrahimshaath.co.uk/keyfinder/";
     license = licenses.gpl3Plus;
     platforms = platforms.linux;
   };

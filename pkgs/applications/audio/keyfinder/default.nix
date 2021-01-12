@@ -1,12 +1,12 @@
-{ lib, mkDerivation, fetchFromGitHub, libav_0_8, libkeyfinder, qtbase, qtxmlpatterns, qmake, taglib }:
+{ lib, stdenv, fetchFromGitHub, libav_0_8, libkeyfinder, qtbase, qtxmlpatterns, qmake, taglib }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "keyfinder";
-  version = "2.4";
+  version = "2.2";
 
   src = fetchFromGitHub {
-    sha256 = "11yhdwan7bz8nn8vxr54drckyrnlxynhx5s981i475bbccg8g7ls";
-    rev = "530034d6fe86d185f6a68b817f8db5f552f065d7"; # tag is missing
+    sha256 = "0vjszk1h8vj2qycgbffzy6k7amg75jlvlnzwaqhz9nll2pcvw0zl";
+    rev = version;
     repo = "is_KeyFinder";
     owner = "ibsh";
   };
@@ -16,9 +16,14 @@ mkDerivation rec {
 
   postPatch = ''
     substituteInPlace is_KeyFinder.pro \
+       --replace "keyfinder.0" "keyfinder" \
        --replace "-stdlib=libc++" "" \
        --replace "\$\$[QT_INSTALL_PREFIX]" "$out"
   '';
+
+  dontWrapQtApps = true;
+
+  enableParallelBuilding = true;
 
   meta = with lib; {
     description = "Musical key detection for digital audio (graphical UI)";
