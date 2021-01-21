@@ -19599,6 +19599,8 @@ in
 
   musl = callPackage ../os-specific/linux/musl { };
 
+  musl-fts = callPackage ../os-specific/linux/musl-fts { };
+
   nushell = callPackage ../shells/nushell {
     inherit (darwin.apple_sdk.frameworks) AppKit Security;
   };
