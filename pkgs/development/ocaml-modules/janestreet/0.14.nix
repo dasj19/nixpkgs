@@ -158,7 +158,8 @@ rec {
 
   base = janePackage {
     pname = "base";
-    hash = "1d5ynzzq58g9qammhba5dasrg734p9vndq28a7kg80bdxb8gh3kp";
+    version = "0.14.1";
+    hash = "1hizjxmiqlj2zzkwplzjamw9rbnl0kh44sxgjpzdij99qnfkzylf";
     minimumOCamlVersion = "4.07";
     meta.description = "Full standard library replacement for OCaml";
     buildInputs = [ dune-configurator ];
@@ -531,6 +532,14 @@ rec {
     minimumOCamlVersion = "4.04.2";
     meta.description = "Monadic let-bindings";
     propagatedBuildInputs = [ ppxlib ];
+  };
+
+  ppx_log = janePackage {
+    pname = "ppx_log";
+    hash = "10hnr5lpww3fw0bnidzngalbgy0j1wvz1g5ki9c9h558pnpvsazr";
+    minimumOCamlVersion = "4.08.0";
+    meta.description = "Ppx_sexp_message-like extension nodes for lazily rendering log messages";
+    propagatedBuildInputs = [ async_unix ppx_jane sexplib ];
   };
 
   ppx_module_timer = janePackage {

@@ -34,7 +34,7 @@ stdenv.mkDerivation {
     because the Qt versions of dependencies may not be coherent, causing build and runtime failures.
    </para>
   </callout>
-  <callout arearefs="qt-default-nix-co-2'>
+  <callout arearefs='qt-default-nix-co-2'>
     <para>
       All Qt packages must include <literal>wrapQtAppsHook</literal> in
       <literal>nativeBuildInputs</literal>, or you must explicitly set
@@ -121,7 +121,7 @@ Use the `meta.broken` attribute to disable the package for unsupported Qt versio
 
 stdenv.mkDerivation {
   # ...
-  # Disable this library with Qt &lt; 5.9.0
+  # Disable this library with Qt < 5.9.0
   meta.broken = lib.versionOlder qtbase.version "5.9.0";
 }
 ```

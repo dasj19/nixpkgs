@@ -1,5 +1,4 @@
 { fetchurl, lib, stdenv, buildPackages
-, fetchpatch
 , curl, openssl, zlib, expat, perlPackages, python3, gettext, cpio
 , gnugrep, gnused, gawk, coreutils # needed at runtime by git-filter-branch etc
 , openssh, pcre2
@@ -8,6 +7,7 @@
 , svnSupport, subversionClient, perlLibs, smtpPerlLibs
 , perlSupport ? true
 , nlsSupport ? true
+, osxkeychainSupport ? stdenv.isDarwin
 , guiSupport
 , withManual ? true
 , pythonSupport ? true
@@ -19,6 +19,7 @@
 , gzip # needed at runtime by gitweb.cgi
 }:
 
+assert osxkeychainSupport -> stdenv.isDarwin;
 assert sendEmailSupport -> perlSupport;
 assert svnSupport -> perlSupport;
 
@@ -65,10 +66,10 @@ stdenv.mkDerivation {
         --subst-var-by gettext ${gettext}
   '';
 
-  nativeBuildInputs = [ gettext perlPackages.perl ]
+  nativeBuildInputs = [ gettext perlPackages.perl makeWrapper ]
     ++ lib.optionals withManual [ asciidoctor texinfo xmlto docbook2x
          docbook_xsl docbook_xsl_ns docbook_xml_dtd_45 libxslt ];
-  buildInputs = [curl openssl zlib expat cpio makeWrapper libiconv]
+  buildInputs = [curl openssl zlib expat cpio libiconv]
     ++ lib.optionals perlSupport [ perlPackages.perl ]
     ++ lib.optionals guiSupport [tcl tk]
     ++ lib.optionals withpcre2 [ pcre2 ]
@@ -115,7 +116,7 @@ stdenv.mkDerivation {
     make -C contrib/subtree
   '' + (lib.optionalString perlSupport ''
     make -C contrib/diff-highlight
-  '') + (lib.optionalString stdenv.isDarwin ''
+  '') + (lib.optionalString osxkeychainSupport ''
     make -C contrib/credential/osxkeychain
   '') + (lib.optionalString withLibsecret ''
     make -C contrib/credential/libsecret
@@ -129,7 +130,7 @@ stdenv.mkDerivation {
 
   installFlags = [ "NO_INSTALL_HARDLINKS=1" ];
 
-  preInstall = (lib.optionalString stdenv.isDarwin ''
+  preInstall = (lib.optionalString osxkeychainSupport ''
     mkdir -p $out/bin
     ln -s $out/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain $out/bin/
     rm -f $PWD/contrib/credential/osxkeychain/git-credential-osxkeychain.o
@@ -248,8 +249,8 @@ stdenv.mkDerivation {
          notSupported "$out/$prog"
        done
      '')
-   + lib.optionalString stdenv.isDarwin ''
-    # enable git-credential-osxkeychain by default if darwin
+   + lib.optionalString osxkeychainSupport ''
+    # enable git-credential-osxkeychain on darwin if desired (default)
     mkdir -p $out/etc
     cat > $out/etc/gitconfig << EOF
     [credential]

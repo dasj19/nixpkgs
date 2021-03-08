@@ -5,7 +5,7 @@
 , substituteAll
 , pythonOlder
 , geos
-, pytest
+, pytestCheckHook
 , cython
 , numpy
 , fetchpatch
@@ -26,11 +26,15 @@ buildPythonPackage rec {
     cython
   ];
 
-  checkInputs = [ pytest ];
+  propagatedBuildInputs = [
+    numpy
+  ];
 
-  propagatedBuildInputs = [ numpy ];
+  checkInputs = [
+    pytestCheckHook
+  ];
 
-  # environment variable used in shapely/_buildcfg.py
+  # Environment variable used in shapely/_buildcfg.py
   GEOS_LIBRARY_PATH = "${geos}/lib/libgeos_c${stdenv.hostPlatform.extensions.sharedLibrary}";
 
   patches = [
@@ -44,24 +48,28 @@ buildPythonPackage rec {
         ".travis.yml"
       ];
     })
-
     # Patch to search form GOES .so/.dylib files in a Nix-aware way
     (substituteAll {
       src = ./library-paths.patch;
       libgeos_c = GEOS_LIBRARY_PATH;
       libc = lib.optionalString (!stdenv.isDarwin) "${stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
     })
+ ];
+
+  preCheck = ''
+    rm -r shapely # prevent import of local shapely
+  '';
+
+  disabledTests = [
+    "test_collection"
   ];
 
-  # Disable the tests that improperly try to use the built extensions
-  checkPhase = ''
-    rm -r shapely # prevent import of local shapely
-    py.test tests
-  '';
+  pythonImportsCheck = [ "shapely" ];
 
   meta = with lib; {
     description = "Geometric objects, predicates, and operations";
-    maintainers = with maintainers; [ knedlsepp ];
     homepage = "https://pypi.python.org/pypi/Shapely/";
+    license = with licenses; [ bsd3 ];
+    maintainers = with maintainers; [ knedlsepp ];
   };
 }

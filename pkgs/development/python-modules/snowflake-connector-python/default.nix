@@ -25,12 +25,12 @@
 
 buildPythonPackage rec {
   pname = "snowflake-connector-python";
-  version = "2.3.8";
+  version = "2.3.10";
   disabled = isPy27;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "sha256-zsS5+0UGDwZM65MILfgAvZ67AbXGcLsVmGacgoxX530=";
+    sha256 = "ad62bfd31e677d39984449d9c68e233da2776b80894a988a2421aad412e4c44f";
   };
 
   propagatedBuildInputs = [
@@ -57,11 +57,7 @@ buildPythonPackage rec {
 
   postPatch = ''
     substituteInPlace setup.py \
-      --replace "'boto3>=1.4.4,<1.16'," "'boto3~=1.16'," \
-      --replace "'cryptography>=2.5.0,<3.0.0'," "'cryptography'," \
-      --replace "'pyOpenSSL>=16.2.0,<20.0.0'," "'pyOpenSSL'," \
-      --replace "'idna<2.10'," "'idna'," \
-      --replace "'requests<2.24.0'," "'requests',"
+      --replace "'pyOpenSSL>=16.2.0,<20.0.0'," "'pyOpenSSL',"
   '';
 
   # tests require encrypted secrets, see

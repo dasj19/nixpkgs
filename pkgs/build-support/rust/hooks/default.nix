@@ -1,8 +1,10 @@
 { buildPackages
 , callPackage
+, cargo
 , diffutils
 , lib
 , makeSetupHook
+, maturin
 , rust
 , stdenv
 , target ? rust.toRustTargetSpec stdenv.hostPlatform
@@ -16,9 +18,42 @@ let
   shortTarget = if targetIsJSON then
       (lib.removeSuffix ".json" (builtins.baseNameOf "${target}"))
     else target;
-  ccForBuild="${buildPackages.stdenv.cc}/bin/${buildPackages.stdenv.cc.targetPrefix}cc";
-  ccForHost="${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc";
+  ccForBuild = "${buildPackages.stdenv.cc}/bin/${buildPackages.stdenv.cc.targetPrefix}cc";
+  cxxForBuild = "${buildPackages.stdenv.cc}/bin/${buildPackages.stdenv.cc.targetPrefix}c++";
+  ccForHost = "${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc";
+  cxxForHost = "${stdenv.cc}/bin/${stdenv.cc.targetPrefix}c++";
+  rustBuildPlatform = rust.toRustTarget stdenv.buildPlatform;
+  rustTargetPlatform = rust.toRustTarget stdenv.hostPlatform;
+  rustTargetPlatformSpec = rust.toRustTargetSpec stdenv.hostPlatform;
 in {
+  cargoBuildHook = callPackage ({ }:
+    makeSetupHook {
+      name = "cargo-build-hook.sh";
+      deps = [ cargo ];
+      substitutions = {
+        inherit ccForBuild ccForHost cxxForBuild cxxForHost
+          rustBuildPlatform rustTargetPlatform rustTargetPlatformSpec;
+      };
+    } ./cargo-build-hook.sh) {};
+
+  cargoCheckHook = callPackage ({ }:
+    makeSetupHook {
+      name = "cargo-check-hook.sh";
+      deps = [ cargo ];
+      substitutions = {
+        inherit rustTargetPlatformSpec;
+      };
+    } ./cargo-check-hook.sh) {};
+
+  cargoInstallHook = callPackage ({ }:
+    makeSetupHook {
+      name = "cargo-install-hook.sh";
+      deps = [ ];
+      substitutions = {
+        inherit shortTarget;
+      };
+    } ./cargo-install-hook.sh) {};
+
   cargoSetupHook = callPackage ({ }:
     makeSetupHook {
       name = "cargo-setup-hook.sh";
@@ -46,4 +81,14 @@ in {
         '';
       };
     } ./cargo-setup-hook.sh) {};
+
+  maturinBuildHook = callPackage ({ }:
+    makeSetupHook {
+      name = "maturin-build-hook.sh";
+      deps = [ cargo maturin ];
+      substitutions = {
+        inherit ccForBuild ccForHost cxxForBuild cxxForHost
+          rustBuildPlatform rustTargetPlatform rustTargetPlatformSpec;
+      };
+    } ./maturin-build-hook.sh) {};
 }

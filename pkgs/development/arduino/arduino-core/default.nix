@@ -22,6 +22,7 @@
 , glib
 , pango
 , gdk-pixbuf
+, gtk2
 , libpng12
 , expat
 , freetype
@@ -239,7 +240,7 @@ stdenv.mkDerivation rec {
       patchelf --debug \
           --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) \
           --set-rpath "${teensy_libpath}" \
-          $out/share/arduino/hardware/tools/teensy
+          $out/share/arduino/hardware/tools/teensy{,_ports,_reboot,_restart,_serialmon}
     ''}
   '';
 

@@ -21,7 +21,6 @@
   runtimeShell,
   shadow,
   skopeo,
-  stdenv,
   storeDir ? builtins.storeDir,
   substituteAll,
   symlinkJoin,
@@ -120,7 +119,7 @@ rec {
     export GOPATH=$(pwd)
     export GOCACHE="$TMPDIR/go-cache"
     mkdir -p src/github.com/docker/docker/pkg
-    ln -sT ${docker.moby.src}/pkg/tarsum src/github.com/docker/docker/pkg/tarsum
+    ln -sT ${docker.moby-src}/pkg/tarsum src/github.com/docker/docker/pkg/tarsum
     go build
 
     mkdir -p $out/bin
@@ -770,6 +769,7 @@ rec {
           mkdir $out
 
           tar \
+            --sort name \
             --owner 0 --group 0 --mtime "@$SOURCE_DATE_EPOCH" \
             --hard-dereference \
             -C old_out \

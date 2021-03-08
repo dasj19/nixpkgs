@@ -20,7 +20,8 @@ in
 
     inherit src version;
 
-    buildInputs = [ erlang makeWrapper ];
+    nativeBuildInputs = [ makeWrapper ];
+    buildInputs = [ erlang ];
 
     LANG = "C.UTF-8";
     LC_TYPE = "C.UTF-8";
@@ -46,8 +47,7 @@ in
        b=$(basename $f)
         if [ "$b" = mix ]; then continue; fi
         wrapProgram $f \
-          --prefix PATH ":" "${lib.makeBinPath [ erlang coreutils curl bash ]}" \
-          --set CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
+          --prefix PATH ":" "${lib.makeBinPath [ erlang coreutils curl bash ]}"
       done
 
       substituteInPlace $out/bin/mix \
