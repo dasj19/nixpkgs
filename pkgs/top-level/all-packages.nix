@@ -718,7 +718,7 @@ with pkgs;
   makeWrapper = makeSetupHook
     { deps = [ dieHook ];
       substitutions = {
-        shell = targetPackages.runtimeShell;
+      #  shell = pkgs.fish;
         passthru.tests = tests.makeWrapper;
       };
     }
