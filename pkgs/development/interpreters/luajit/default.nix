@@ -76,13 +76,13 @@ stdenv.mkDerivation rec {
   buildFlags = [
     "amalg" # Build highly optimized version
   ];
-  makeFlags = [
-    "PREFIX=$(out)"
-    "DEFAULT_CC=${buildPackages.stdenv.cc}/bin/cc"
-    "CROSS=${stdenv.cc.targetPrefix}"
+#  makeFlags = [
+#    "PREFIX=$(out)"
+#    "DEFAULT_CC=${buildPackages.stdenv.cc}/bin/cc"
+#    "CROSS=${stdenv.cc.targetPrefix}"
     # TODO: when pointer size differs, we would need e.g. -m32
-    "HOST_CC=${buildPackages.stdenv.cc}/bin/cc"
-  ] ++ lib.optional enableJITDebugModule "INSTALL_LJLIBD=$(INSTALL_LMOD)";
+#    "HOST_CC=${buildPackages.stdenv.cc}/bin/cc"
+#  ] ++ lib.optional enableJITDebugModule "INSTALL_LJLIBD=$(INSTALL_LMOD)";
   enableParallelBuilding = true;
   NIX_CFLAGS_COMPILE = XCFLAGS;
 
