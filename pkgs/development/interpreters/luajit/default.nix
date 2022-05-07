@@ -80,7 +80,7 @@ stdenv.mkDerivation rec {
     "PREFIX=$(out)"
 #    "DEFAULT_CC=${buildPackages.stdenv.cc}/bin/cc"
     "CROSS=${stdenv.cc.targetPrefix}"
-    ''CC="gcc -m32"''
+    "CC=gcc -m32"
     # TODO: when pointer size differs, we would need e.g. -m32
 #    "HOST_CC=${buildPackages.stdenv.cc}/bin/cc"
   ] ++ lib.optional enableJITDebugModule "INSTALL_LJLIBD=$(INSTALL_LMOD)";
